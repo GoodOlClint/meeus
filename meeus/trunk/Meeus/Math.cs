@@ -31,7 +31,7 @@ namespace Meeus
 {
     /// <summary>
     /// A wrapper for System.Math, all applicable functions are in degrees instead of radians.
-    /// Also includes helper misc helper functions.
+    /// Also includes misc helper functions.
     /// </summary>
     public static partial class Math
     {
