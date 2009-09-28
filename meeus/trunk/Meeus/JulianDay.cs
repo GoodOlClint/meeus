@@ -33,26 +33,35 @@ namespace Meeus
     //Chapter 7
     public class JulianDay
     {
+        /// <summary>
+        /// Calculates the number of days (and fractions of a day) since the Julian Epoch
+        /// </summary>
+        /// <param name="Y">The year in astronomical year notation (1 CE = 1, 1 BCE = 0, 2 BCE = -1 etc)</param>
+        /// <param name="M">The month of the year</param>
+        /// <param name="D">The day of the month</param>
+        /// <returns>The number of days since -4712 January 1, 12:00 UT</returns>
+        /// <exception cref="ArgumentOutOfRangeException">CE 1582 October 5-14 are not real dates</exception>
         public static double FromDate(int Y, Month M, double D)
         {
-            int A;
-            int B;
-            double JD; 
-            
+            int A, B;
+            double JD;
+
             if (M == Month.January || M == Month.February)
             { Y = Y - 1; M = M + 12; }
 
             //First, is this a Julian or Gregorian Date?
-            //Julian Dates are before October 15th 1582
+            //Julian Dates are before CE 1582 October 15
             if (Y > 1582 || (Y == 1582 && M > Month.October) || (Y == 1582 && M == Month.October && D >= 15))
             {
                 A = Y / 100;
                 B = 2 - A + (A / 4);
                 Debug.WriteLine("A\t= " + A);
             }
+            //Gregorian dates are after CE 1582 October 4
             else if (Y < 1582 || (Y == 1582 && M < Month.October) || (Y == 1582 && M == Month.October && D <= 4))
             { B = 0; }
-            else { throw new IndexOutOfRangeException("October 5th-14th 1582 are not real dates"); }
+            //CE 1582 October 5-14 do not exist, there was a ten day overlay between the Gregorian and Julian calendars
+            else { throw new ArgumentOutOfRangeException("CE 1582 October 5-14 are not real dates"); }
 
             JD = (int)(365.25 * (Y + 4716)) + (int)(30.6001 * ((int)M + 1)) + D + B - 1524.5;
 
