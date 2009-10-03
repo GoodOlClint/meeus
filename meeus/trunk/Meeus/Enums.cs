@@ -49,4 +49,15 @@ namespace Meeus
         Autumn = 2,
         Winter = 3
     }
+    public enum DayOfTheWeek : int
+    {
+        Sunday = 0,
+        Monday = 1,
+        Tuesday = 2,
+        Wednesday = 3,
+        Thursday = 4,
+        Friday = 5,
+        Saturday = 6
+    }
+
 }

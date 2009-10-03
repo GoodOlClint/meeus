@@ -69,5 +69,102 @@ namespace Meeus
             Debug.WriteLine("JD\t= " + JD);
             return JD;
         }
+
+
+        /// <summary>
+        /// Converts a Julian Day number into an AstroDate object.
+        /// </summary>
+        /// <param name="JD">A positive Julian Day number.</param>
+        /// <returns>An AstroDate object equal to the date of the Julian Day number.</returns>
+        public static AstroDate ToDate(double JD)
+        {
+            int Z, A, a, B, C, D, E;
+            double F;
+            AstroDate ad = new AstroDate();
+
+            JD = JD + 0.5;
+            Z = (int)Math.Truncate(JD);
+            F = JD - Z;
+
+            if (Z > 2299161)
+            {
+                a = (int)((Z - 1867216.25) / 35624.25);
+                Debug.WriteLine("a\t= " + a);
+                A = Z + 1 + a - (int)(a / 4);
+            }
+            else { A = Z; }
+
+
+            B = A + 1524;
+            C = (int)((B - 122.1) / 365.25);
+            D = (int)(365.25 * C);
+            E = (int)((B - D) / 30.6001);
+            ad.Day = B - D - (int)(30.6001 * E) + F;
+            ad.Day = Math.Round(ad.Day, 5);
+            if (E < 14) { ad.Month = (Month)E - 1; }
+            else { ad.Month = (Month)E - 13; }
+
+            if (ad.Month == Month.January || ad.Month == Meeus.Month.February) { ad.Year = C - 4715; }
+            else { ad.Year = C - 4716; }
+            Debug.WriteLine("A\t= " + A);
+            Debug.WriteLine("B\t= " + B);
+            Debug.WriteLine("C\t= " + C);
+            Debug.WriteLine("D\t= " + D);
+            Debug.WriteLine("E\t= " + E);
+            Debug.WriteLine("Day\t= " + ad.Day);
+            Debug.WriteLine("Month\t= " + ad.Month);
+            Debug.WriteLine("Year\t= " + ad.Year);
+            return ad;
+        }
+
+        public static double Interval(double jd1, double jd2) { return jd2 - jd1; }
+        public static double Interval(AstroDate ad1, AstroDate ad2)
+        {
+            double jd1, jd2;
+            jd1 = FromDate(ad1.Year, ad1.Month, ad1.Day);
+            jd2 = FromDate(ad2.Year, ad2.Month, ad2.Day);
+            return jd2 - jd1;
+        }
+
+        public static DayOfTheWeek DayOfWeek(double JD)
+        {
+            double d, j;
+            d = JD - Math.Floor(JD);
+            j = d - 0.5;
+            JD = (JD - j) + 1.5;
+            return (DayOfTheWeek)(JD % 7);
+        }
+
+        public static DayOfTheWeek DayOfWeek(AstroDate ad)
+        { return DayOfWeek(FromDate(ad.Year, ad.Month, ad.Day)); }
+
+        public static int DayOfTheYear(AstroDate ad)
+        {
+            int K, M, D, N;
+            K = IsLeepYear(ad.Year) ? 1 : 2;
+            M = (int)ad.Month;
+            D = (int)ad.Day;
+            N = (int)((275 * M) / 9) - K * (int)((M + 9) / 12) + D - 30;
+            Debug.WriteLine("K\t= " + K);
+            Debug.WriteLine("M\t= " + M);
+            Debug.WriteLine("D\t= " + D);
+            Debug.WriteLine("N\t= " + N);
+            return N;
+        }
+
+        public static bool IsLeepYear(int year)
+        {
+            if (year < 1582)//Julian Calendar
+            { return (year % 4) == 0; }
+            else //Gregorian Calendar
+            { return (((year % 4) == 0) && ((year % 100) != 0) || ((year % 400) == 0)); }
+        }
+    }
+
+    public struct AstroDate
+    {
+        public int Year { get; set; }
+        public Month Month { get; set; }
+        public double Day { get; set; }
     }
 }

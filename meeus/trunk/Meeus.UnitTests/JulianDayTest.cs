@@ -112,5 +112,69 @@ namespace Meeus.UnitTests
             actual = JulianDay.FromDate(Y, M, D);
             Assert.AreEqual(expected, actual);
         }
+
+        /// <summary>
+        ///A test for ToDate
+        ///</summary>
+        [TestMethod()]
+        public void ToDateTest()
+        {
+            double JD = 2436116.31;
+            AstroDate expected = new AstroDate();
+            expected.Year = 1957;
+            expected.Month = Month.October;
+            expected.Day = 4.81;
+            AstroDate actual;
+            actual = JulianDay.ToDate(JD);
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        ///A test for ToDate
+        ///</summary>
+        [TestMethod()]
+        public void ToDateTest1()
+        {
+            double JD = 1842713.0;
+            AstroDate expected = new AstroDate();
+            expected.Year = 333;
+            expected.Month = Month.January;
+            expected.Day = 27.5;
+            AstroDate actual;
+            actual = JulianDay.ToDate(JD);
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        ///A test for ToDate
+        ///</summary>
+        [TestMethod()]
+        public void ToDateTest2()
+        {
+            double JD = 1507900.13;
+            AstroDate expected = new AstroDate();
+            expected.Year = -584;
+            expected.Month = Month.May;
+            expected.Day = 28.63;
+            AstroDate actual;
+            actual = JulianDay.ToDate(JD);
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        ///A test for DayOfTheYear
+        ///</summary>
+        [TestMethod()]
+        public void DayOfTheYearTest()
+        {
+            AstroDate ad = new AstroDate(); // TODO: Initialize to an appropriate value
+            ad.Year = 1978;
+            ad.Month = Month.November;
+            ad.Day = 14;
+            int expected = 318; // TODO: Initialize to an appropriate value
+            int actual;
+            actual = JulianDay.DayOfTheYear(ad);
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
